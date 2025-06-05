@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header {
+  margin-top: 3rem;
+  text-align: left;
+}
+
+.heading-text {
+  padding: 0.5rem 0 0.5rem 0;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 2.5rem;
+}
+
+.user-text {
+  font-size: 1rem;
+  color: #ff4500;
+  font-family: "Inter", sans-serif;
+  margin: 1rem 0 0 0;
+  opacity: 0.9;
+}
+
+.hero-text {
+  font-size: 1rem;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  opacity: 0.9;
+  margin: 1rem 0 1rem 0;
+}
+
+.button-group {
+  display: flex;
+  padding-top: 1rem;
+  gap: 1rem;
+  justify-content: left;
+}
+
+.login-btn,
+.signup-btn {
+  padding: 0.75rem 2rem;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.login-btn {
+  background: #030303;
+  border-color: #b5b5b55d;
+  border-width: 1px;
+  border-style: solid;
+  color: #fff;
+}
+
+.signup-btn {
+  background: rgba(255, 69, 0, 0.4);
+  border-color: rgba(255, 69, 0, 0.4);
+  border-width: 1px;
+  border-style: solid;
+  color: #fff;
+}
+
+footer {
+  margin-top: 2rem;
+  color: #888;
+  font-size: 0.9rem;
+  font-family: "Inter", sans-serif;
+}
+
+.home-root {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.home-slide {
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+  will-change: transform;
+  position: relative;
+  z-index: 1;
+}
+
+.beams-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none; /* So it doesn't block clicks */
+}
+
+.home-slide.slide-up {
+  transform: translateY(-100vh);
+}
+
+/* Shared styles for SignUp and Login slides */
+.signup-slide,
+.login-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(100vh);
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+  will-change: transform;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.signup-slide.slide-in,
+.login-slide.slide-in {
+  transform: translateY(0);
+  pointer-events: auto;
+}

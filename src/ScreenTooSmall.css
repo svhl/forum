@@ -1,0 +1,26 @@
+.screen-too-small-overlay {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  padding: 0 40px 0 40px;
+  background: #030303;
+}
+
+.footer {
+  z-index: 9999;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 0.9rem;
+  font-family: "Inter", sans-serif;
+  padding: 0 40px 0 40px;
+  background: #030303;
+}
