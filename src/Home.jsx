@@ -1,78 +1,119 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Home.css";
 import ShinyText from "./ShinyText.jsx";
-import ScreenTooSmall from "./ScreenTooSmall.jsx";
 import SignUp from "./SignUp.jsx";
 import Login from "./Login.jsx";
 import Beams from "./Beams.jsx";
 
 function Home() {
-  const [tooSmall, setTooSmall] = useState(window.innerWidth < 1000);
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => setTooSmall(window.innerWidth < 1000);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  if (tooSmall) return <ScreenTooSmall />;
-
   return (
     <div className="home-root">
-      <div className="beams-bg">
-        <Beams
-          beamWidth={5}
-          beamHeight={30}
-          beamNumber={20}
-          lightColor="#646464"
-          speed={4}
-          noiseIntensity={1.75}
-          scale={0.2}
-          rotation={30}
-        />
-      </div>
+      <div className={`main-fade${showSignUp || showLogin ? " faded" : ""}`}>
+        <div className="beams-bg">
+          <Beams
+            beamWidth={3}
+            beamHeight={30}
+            beamNumber={20}
+            lightColor="#858585"
+            speed={4}
+            noiseIntensity={1.75}
+            scale={0.2}
+            rotation={30}
+          />
+        </div>
 
-      <div
-        className={`home-slide ${showSignUp || showLogin ? "slide-up" : ""}`}
-      >
-        <div className="home-container">
-          <header>
-            <p className="user-text">jennifer</p>
-            <p className="hero-text">hi! anyone there?</p>
-            <p className="user-text">nczceta</p>
-            <p className="hero-text">o.o wow this is like irc</p>
-            <p className="hero-text">what is this place?</p>
-            <ShinyText text="Welcome to The 4M!" className="heading-text" />
-            <p className="user-text">jennifer</p>
-            <p className="hero-text">enjoy simple discussions!</p>
-            <p className="user-text">parsnip</p>
-            <p className="hero-text">what's up :)</p>
-            <div className="button-group">
-              <button
-                className="signup-btn"
-                onClick={() => setShowSignUp(true)}
+        <div className="home-slide">
+          <div className="home-container">
+            <header>
+              <p
+                className="user-text"
+                style={{ color: "#c295eb", transform: "translateX(-10rem)" }}
               >
-                Sign Up
-              </button>
-              <button className="login-btn" onClick={() => setShowLogin(true)}>
-                Login
-              </button>
-            </div>
-          </header>
-          <footer>
-            <p>
-              &copy; {new Date().getFullYear()} The 4M. All rights reserved.
-            </p>
-          </footer>
+                jennifer
+              </p>
+              <p
+                className="hero-text"
+                style={{ transform: "translateX(-10rem)" }}
+              >
+                hi! anyone there?
+              </p>
+              <p
+                className="user-text"
+                style={{ color: "#a6de2f", transform: "translateX(30rem)" }}
+              >
+                nczceta
+              </p>
+              <p
+                className="hero-text"
+                style={{ transform: "translateX(30rem)" }}
+              >
+                wow this is like irc
+              </p>
+              <p
+                className="hero-text"
+                style={{ transform: "translateX(30rem)" }}
+              >
+                a minimal social media :)
+              </p>
+              <ShinyText text="Welcome to The 4M!" className="heading-text" />
+              <p
+                className="user-text"
+                style={{ color: "#c295eb", transform: "translateX(-5rem)" }}
+              >
+                jennifer
+              </p>
+              <p
+                className="hero-text"
+                style={{ transform: "translateX(-5rem)" }}
+              >
+                login below to chat!
+              </p>
+              <p
+                className="user-text"
+                style={{ color: "#ffa07a", transform: "translateX(25rem)" }}
+              >
+                parsnip
+              </p>
+              <p
+                className="hero-text"
+                style={{ transform: "translateX(25rem)" }}
+              >
+                or sign up if you haven't already
+              </p>
+              <div className="button-group-1">
+                <button
+                  className="signup-btn"
+                  onClick={() => setShowSignUp(true)}
+                >
+                  Sign Up
+                </button>
+                <button
+                  className="login-btn"
+                  onClick={() => setShowLogin(true)}
+                >
+                  Login
+                </button>
+              </div>
+            </header>
+            <footer>
+              <p>
+                &copy; {new Date().getFullYear()} The 4M. All rights reserved.
+              </p>
+            </footer>
+          </div>
         </div>
       </div>
-      <div className={`signup-slide ${showSignUp ? "slide-in" : ""}`}>
-        <SignUp onClose={() => setShowSignUp(false)} />
+
+      {/* Fade in/out for SignUp */}
+      <div className={`fade-modal${showSignUp ? " visible" : ""}`}>
+        {showSignUp && <SignUp onClose={() => setShowSignUp(false)} />}
       </div>
-      <div className={`login-slide ${showLogin ? "slide-in" : ""}`}>
-        <Login onClose={() => setShowLogin(false)} />
+      {/* Fade in/out for Login */}
+      <div className={`fade-modal${showLogin ? " visible" : ""}`}>
+        {showLogin && <Login onClose={() => setShowLogin(false)} />}
       </div>
     </div>
   );
