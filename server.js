@@ -2,13 +2,15 @@ const express = require("express");
 const { MongoClient } = require("mongodb");
 const cors = require("cors");
 const session = require("express-session");
+const cron = require("node-cron");
+require("dotenv").config();
 
 const app = express();
 const PORT = 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // change if frontend URL differs
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -26,7 +28,7 @@ app.use(
 );
 
 // MongoDB setup
-const uri = "mongodb://localhost:27017";
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 const dbName = "forum";
 
@@ -43,8 +45,8 @@ app.post("/api/signup", async (req, res) => {
     "#c295eb",
     // light green
     "#a6de2f",
-    // salmon
-    "#ffa07a",
+    // yellow
+    "#ffc200",
     // dark green
     "#48d9a4",
     // light purple
@@ -207,16 +209,7 @@ app.delete("/api/delete-post", async (req, res) => {
     await client.connect();
     const db = client.db("forum");
     const collection = db.collection(topic);
-    const result = await collection.deleteOne({
-      _id: new ObjectId(postId),
-      username: req.session.user.username,
-    });
-
-    if (result.deletedCount === 0) {
-      return res
-        .status(403)
-        .json({ message: "You can only delete your own posts." });
-    }
+    const result = await collection.deleteOne({ _id: new ObjectId(postId) });
 
     res.json({ message: "Post deleted." });
   } catch (err) {
@@ -280,6 +273,29 @@ app.post("/api/logout", (req, res) => {
     res.clearCookie("connect.sid");
     res.json({ message: "Logged out" });
   });
+});
+
+// Delete all topic collections daily at midnight UTC, except "users" and "rules"
+cron.schedule("0 0 * * *", async () => {
+  try {
+    await client.connect();
+    const db = client.db("forum");
+
+    const collections = await db.listCollections().toArray();
+
+    for (const col of collections) {
+      if (col.name !== "users" && col.name !== "rules") {
+        await db.collection(col.name).drop();
+        console.log(`Dropped collection: ${col.name}`);
+      }
+    }
+
+    console.log(
+      "Topic collections deleted (except users and rules) at midnight UTC."
+    );
+  } catch (err) {
+    console.error("Error during daily cleanup:", err.message);
+  }
 });
 
 app.listen(PORT, () => {

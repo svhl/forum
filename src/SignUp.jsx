@@ -55,6 +55,9 @@ const SignUp = ({ onClose }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <p className="go-to-dashboard">
+          Check it out before signing up? <a href="./dashboard">Click here</a>
+        </p>
         <div className="button-group-2">
           <button type="submit" className="signup-submit-btn">
             Sign Up

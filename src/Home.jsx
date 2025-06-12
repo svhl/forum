@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Home.css";
 import ShinyText from "./ShinyText.jsx";
 import SignUp from "./SignUp.jsx";
@@ -8,6 +8,19 @@ import Beams from "./Beams.jsx";
 function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [footerIndex, setFooterIndex] = useState(0);
+  const footerTexts = [
+    "&copy; " + new Date().getFullYear() + " The 4M. All rights reserved.",
+    "Developed by Muhammed S. Suhail",
+    "Check it out on <a href='https://github.com/svhl/forum' target='_blank'>GitHub</a>",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFooterIndex((prev) => (prev + 1) % footerTexts.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="home-root">
@@ -73,7 +86,7 @@ function Home() {
               </p>
               <p
                 className="user-text"
-                style={{ color: "#ffa07a", transform: "translateX(25rem)" }}
+                style={{ color: "#ffc200", transform: "translateX(25rem)" }}
               >
                 parsnip
               </p>
@@ -99,9 +112,10 @@ function Home() {
               </div>
             </header>
             <footer>
-              <p>
-                &copy; {new Date().getFullYear()} The 4M. All rights reserved.
-              </p>
+              <p
+                className="footer-text"
+                dangerouslySetInnerHTML={{ __html: footerTexts[footerIndex] }}
+              />
             </footer>
           </div>
         </div>

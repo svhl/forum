@@ -179,6 +179,12 @@ const AdminDashboard = () => {
       return;
     }
 
+    // 🔁 Ask for confirmation BEFORE sending the request
+    const confirmed = window.confirm(
+      `Are you sure you want to ban user "${username}"?`
+    );
+    if (!confirmed) return;
+
     try {
       const res = await fetch("http://localhost:5000/api/ban-user", {
         method: "POST",
@@ -189,16 +195,12 @@ const AdminDashboard = () => {
 
       const data = await res.json();
 
-      // These conditions will be triggered by backend validation
       if (!res.ok) {
         window.alert(data.message || "Failed to ban user.");
         return;
       }
 
-      // Only prompt for confirmation if all checks pass server-side
-      if (window.confirm(`Are you sure you want to ban user "${username}"?`)) {
-        window.alert(`User "${username}" has been banned.`);
-      }
+      window.alert(`User "${username}" has been banned.`);
     } catch {
       window.alert("Could not connect to server.");
     }

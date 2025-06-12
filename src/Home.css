@@ -78,6 +78,13 @@ footer {
   font-size: 0.9rem;
   font-family: "Inter", sans-serif;
   bottom: 0;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+
+.footer-text a,
+.footer-text a:visited {
+  color: unset;
 }
 
 .home-root {
