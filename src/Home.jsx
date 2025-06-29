@@ -10,7 +10,7 @@ function Home() {
 	const [showLogin, setShowLogin] = useState(false);
 	const [footerIndex, setFooterIndex] = useState(0);
 	const footerTexts = [
-		"&copy; " + new Date().getFullYear() + " The 4M. All rights reserved.",
+		"&copy; " + new Date().getFullYear() + " 4M. All rights reserved.",
 		"Developed by svhl",
 		"Check it out on <a href='https://github.com/svhl/forum' target='_blank'>GitHub</a>",
 	];
@@ -58,7 +58,7 @@ function Home() {
 								className="hero-text"
 								style={{ transform: "translateX(-10rem)" }}
 							>
-								hi! anyone there?
+								wow this is like irc
 							</p>
 							<p
 								className="user-text"
@@ -73,16 +73,16 @@ function Home() {
 								className="hero-text"
 								style={{ transform: "translateX(30rem)" }}
 							>
-								wow this is like irc
+								a minimal social media :)
 							</p>
 							<p
 								className="hero-text"
 								style={{ transform: "translateX(30rem)" }}
 							>
-								a minimal social media :)
+								use desktop for best experience
 							</p>
 							<ShinyText
-								text="Welcome to The 4M!"
+								text="Welcome to the 4M!"
 								className="heading-text"
 							/>
 							<p

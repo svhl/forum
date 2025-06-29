@@ -4,6 +4,8 @@ const cors = require("cors");
 const session = require("express-session");
 const cron = require("node-cron");
 require("dotenv").config();
+const fetch = (...args) =>
+	import("node-fetch").then((mod) => mod.default(...args));
 
 const app = express();
 const PORT = 5000;
@@ -31,6 +33,8 @@ app.use(
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 const dbName = "forum";
+
+const PERSPECTIVE_API = process.env.PERSPECTIVE_API;
 
 app.post("/api/signup", async (req, res) => {
 	const { username, password } = req.body;
@@ -155,6 +159,48 @@ app.post("/api/post", async (req, res) => {
 			});
 		}
 
+		// --- Perspective API check ---
+		if (!PERSPECTIVE_API) {
+			return res
+				.status(500)
+				.json({ message: "Perspective API key not set on server." });
+		}
+		let perspectiveData, toxicity;
+		try {
+			const perspectiveRes = await fetch(
+				`https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${PERSPECTIVE_API}`,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						comment: { text: body },
+						requestedAttributes: { TOXICITY: {} },
+					}),
+				}
+			);
+			perspectiveData = await perspectiveRes.json();
+			toxicity =
+				perspectiveData.attributeScores?.TOXICITY?.summaryScore
+					?.value || 0;
+		} catch (err) {
+			console.error("Perspective API error:", err);
+			return res
+				.status(500)
+				.json({ message: "Error checking post for harmful content." });
+		}
+		if (toxicity >= 0.8) {
+			const newCooldownUntil = now + 60000;
+			await users.updateOne(
+				{ username: req.session.user.username },
+				{ $set: { cooldownUntil: newCooldownUntil } }
+			);
+			return res.status(400).json({
+				message: "Your post was detected as harmful.",
+				cooldown: newCooldownUntil,
+			});
+		}
+		// --- End Perspective API check ---
+
 		const color = user?.color || "#ff4500";
 		const posts = db.collection(topic);
 		await posts.insertOne({
@@ -171,7 +217,6 @@ app.post("/api/post", async (req, res) => {
 		);
 
 		// Set 1s cooldown for all other users
-		// This is to prevent overusing the Perspective API
 		await users.updateMany(
 			{ username: { $ne: req.session.user.username } },
 			{ $set: { cooldownUntil: now + 1000 } }

@@ -1,4 +1,4 @@
-# The 4M
+# 4M
 
 A minimal text-based forum built using MERN stack
 
