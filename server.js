@@ -29,6 +29,10 @@ app.use(
 	})
 );
 
+// Serve static files from the 'dist' directory
+const path = require("path");
+app.use(express.static(path.join(__dirname, "dist")));
+
 // MongoDB setup
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
@@ -365,6 +369,11 @@ cron.schedule("0 0 * * *", async () => {
 	} catch (err) {
 		console.error("Error during daily cleanup:", err.message);
 	}
+});
+
+// Fallback: serve index.html for any non-API route (for React Router)
+app.get(/^\/(?!api).*/, (req, res) => {
+	res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 app.listen(PORT, () => {
