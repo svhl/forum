@@ -72,7 +72,7 @@ const Dashboard = () => {
 	}, []);
 
 	useEffect(() => {
-		fetch("http://localhost:5000/api/check-auth", {
+		fetch("/api/check-auth", {
 			credentials: "include",
 		})
 			.then((res) => res.json())
@@ -87,12 +87,12 @@ const Dashboard = () => {
 
 		const fetchPosts = () => {
 			if (activeTab === "rules") {
-				fetch("http://localhost:5000/api/rules")
+				fetch("/api/rules")
 					.then((res) => res.json())
 					.then((data) => setPosts(data))
 					.catch(() => setPosts([]));
 			} else {
-				fetch(`http://localhost:5000/api/topic/${activeTab}`)
+				fetch(`/api/topic/${activeTab}`)
 					.then((res) => res.json())
 					.then((data) => setPosts(data))
 					.catch(() => setPosts([]));
@@ -134,7 +134,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		if (!loggedInUser) return;
 		// Fetch user info to get cooldownUntil
-		fetch("http://localhost:5000/api/check-auth", {
+		fetch("/api/check-auth", {
 			credentials: "include",
 		})
 			.then((res) => res.json())
@@ -160,7 +160,7 @@ const Dashboard = () => {
 		if (postCooldownUntil && Date.now() < postCooldownUntil) return;
 
 		try {
-			const res = await fetch("http://localhost:5000/api/post", {
+			const res = await fetch("/api/post", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				credentials: "include",
@@ -198,7 +198,7 @@ const Dashboard = () => {
 
 	const handleLogout = async () => {
 		try {
-			await fetch("http://localhost:5000/api/logout", {
+			await fetch("/api/logout", {
 				method: "POST",
 				credentials: "include",
 			});
