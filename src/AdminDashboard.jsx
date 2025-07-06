@@ -22,6 +22,7 @@ const AdminDashboard = () => {
 	const [shouldStickToBottom, setShouldStickToBottom] = useState(true);
 	const [rightbarVisible, setRightbarVisible] = useState(false);
 	const [hoveredPostId, setHoveredPostId] = useState(null);
+	const [sidebarPointerEnabled, setSidebarPointerEnabled] = useState(false);
 
 	const prevTabRef = useRef(activeTab);
 
@@ -92,6 +93,16 @@ const AdminDashboard = () => {
 		window.addEventListener("mousemove", handleMouseMove);
 		return () => window.removeEventListener("mousemove", handleMouseMove);
 	}, []);
+
+	useEffect(() => {
+		let timer;
+		if (sidebarVisible) {
+			timer = setTimeout(() => setSidebarPointerEnabled(true), 500);
+		} else {
+			setSidebarPointerEnabled(false);
+		}
+		return () => clearTimeout(timer);
+	}, [sidebarVisible]);
 
 	function renderPostBody(body) {
 		const paragraphs = body.split(/\n{2,}/);
@@ -236,9 +247,8 @@ const AdminDashboard = () => {
 			<aside
 				className={`dashboard-sidebar ${
 					sidebarVisible ? "visible" : ""
-				}`}
+				}${sidebarPointerEnabled ? " sidebar-pointer-enabled" : ""}`}
 				onMouseEnter={() => setSidebarVisible(true)}
-				onMouseLeave={() => setSidebarVisible(false)}
 			>
 				{TABS.map((tab) => (
 					<div
@@ -246,7 +256,9 @@ const AdminDashboard = () => {
 						className={`sidebar-tab ${
 							activeTab === tab ? "active" : ""
 						}`}
-						onClick={() => setActiveTab(tab)}
+						onClick={() =>
+							sidebarPointerEnabled ? setActiveTab(tab) : null
+						}
 					>
 						{tab.charAt(0).toUpperCase() + tab.slice(1)}
 					</div>

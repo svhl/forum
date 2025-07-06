@@ -49,14 +49,14 @@ function Home() {
 								className="user-text"
 								style={{
 									color: "#c295eb",
-									transform: "translateX(-10rem)",
+									transform: "translateX(-8rem)",
 								}}
 							>
 								jennifer
 							</p>
 							<p
 								className="hero-text"
-								style={{ transform: "translateX(-10rem)" }}
+								style={{ transform: "translateX(-8rem)" }}
 							>
 								wow this is like irc
 							</p>
@@ -88,15 +88,15 @@ function Home() {
 							<p
 								className="user-text"
 								style={{
-									color: "#c295eb",
-									transform: "translateX(-5rem)",
+									color: "#48d9a4",
+									transform: "translateX(-3rem)",
 								}}
 							>
-								jennifer
+								enio
 							</p>
 							<p
 								className="hero-text"
-								style={{ transform: "translateX(-5rem)" }}
+								style={{ transform: "translateX(-3rem)" }}
 							>
 								login below to chat!
 							</p>

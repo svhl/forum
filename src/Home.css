@@ -17,7 +17,7 @@ header {
 }
 
 .heading-text {
-	padding: 0.5rem 0 0.5rem 0;
+	padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 	color: #fff;
 	font-family: "Inter", sans-serif;
 	font-size: 3.5rem;
@@ -39,11 +39,18 @@ header {
 }
 
 .button-group-1 {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 4.5rem;
+	width: 100%;
+	z-index: 11;
 	display: flex;
-	padding-top: 1rem;
-	gap: 1rem;
 	justify-content: center;
 	align-items: center;
+	gap: 1rem;
+	padding-top: 1rem;
+	background: none;
 }
 
 .login-btn,
@@ -72,14 +79,20 @@ header {
 }
 
 footer {
-	margin-top: auto;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	z-index: 10;
 	padding-top: 1rem;
 	color: #888;
 	font-size: 0.9rem;
 	font-family: "Inter", sans-serif;
-	bottom: 0;
 	transition: opacity 0.5s ease-in-out;
 	opacity: 1;
+	background: none;
+	text-align: center;
 }
 
 .footer-text a,
