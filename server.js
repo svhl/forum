@@ -66,23 +66,43 @@ app.post("/api/signup", async (req, res) => {
 	];
 	// Pick a random color
 	const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+	const ip =
+		req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+		req.connection.remoteAddress ||
+		req.ip;
+	const now = new Date();
+	const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 	try {
 		await client.connect();
 		const db = client.db(dbName);
 		const users = db.collection("users");
+
+		// Check for recent signups from same IP
+		const recentSignup = await users.findOne({
+			ip,
+			signupAt: { $gte: oneHourAgo },
+		});
+		if (recentSignup) {
+			return res.status(429).json({
+				message: "Sign up limit reached for this IP. Try again later.",
+			});
+		}
+
 		const existing = await users.findOne({ username });
 		if (existing) {
 			return res
 				.status(409)
 				.json({ message: "Username already exists." });
 		}
-		// Store the color in the user document
+
 		await users.insertOne({
 			username,
 			password,
 			admin: false,
 			banned: false,
 			color,
+			ip,
+			signupAt: now,
 		});
 		res.json({ message: "User created successfully." });
 	} catch (err) {
