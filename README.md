@@ -1,7 +1,7 @@
 <h1 align="center">4M</h1>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/557248c9-2db8-4051-a7b0-8796e1763a03" width="400">
+  <img src="https://github.com/user-attachments/assets/2ec97d7a-63ed-4516-a628-5787c31d37b2" width="400">
   <img src="https://github.com/user-attachments/assets/8646cd6e-9eb2-4205-8f9b-304fb37a0640" width="400">
 </p>
 
